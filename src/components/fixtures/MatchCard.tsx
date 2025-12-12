@@ -86,13 +86,17 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
     }
 
     return (
-        // Mobile: w-full (max 296px implied by parent padded container). Desktop: w-full (max 788px).
+        // Desktop: 788px width, 76px height, 8px padding top/bottom, 1px border-bottom
         <div
             onClick={onClick}
-            className="flex items-center w-full cursor-pointer hover:bg-[#252735]/50 transition-colors justify-between"
+            className="flex items-center w-full cursor-pointer hover:bg-[#252735]/50 transition-colors justify-between md:w-[788px] md:h-[76px]"
+            style={{
+                paddingTop: "8px",
+                paddingBottom: "8px"
+            }}
         >
             {/* Main Card Content (Left Side) */}
-            {/* Mobile: Width 224px. Desktop: 716px. Using flex-1 to fill available space (328 - 32 - 72 = 224 approx). */}
+            {/* Desktop: Width 716px (788 - 72 = 716) */}
             <div
                 className="flex items-center h-[60px] relative overflow-hidden flex-1 md:w-[716px] md:flex-none"
                 style={{
@@ -110,7 +114,6 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
                 )}
 
                 {/* Column 1: Time */}
-                {/* Mobile: Part of 224px. Maybe smaller? */}
                 <div
                     className="flex flex-col items-center justify-center flex-shrink-0 h-[60px] match-time-text relative w-[40px] md:w-[56px] z-10"
                     style={{ color: statusColor }}
@@ -122,7 +125,6 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
                 </div>
 
                 {/* Column 2: Club Layout */}
-                {/* Mobile: Rest of 224px. Desktop: 660px. */}
                 <div className="flex flex-col justify-center gap-2 h-[60px] p-2 relative flex-1 md:w-[660px] z-10">
                     <div className="flex items-center justify-between h-[18px]">
                         <TeamRow team={match.homeTeam} logoErrorFn={handleImageError} />
@@ -134,9 +136,11 @@ export function MatchCard({ match, onClick }: MatchCardProps) {
                 </div>
             </div>
 
-            {/* Right Side Container */}
-            {/* Fixed 72px */}
-            <div className="flex items-center gap-2 h-[60px] w-[72px] shrink-0">
+            {/* Right Side Container - Desktop: 72px width, 60px height, 8px gap */}
+            <div
+                className="flex items-center h-[60px] w-[72px] shrink-0"
+                style={{ gap: "8px" }}
+            >
                 {/* Result Column with Aggregate */}
                 <div className="flex items-center justify-between h-[60px] py-1 w-[40px]">
                     {/* Aggregate Column */}

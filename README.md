@@ -1,75 +1,171 @@
-# React + TypeScript + Vite
+# Sports Hub Frontend Assessment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A pixel-perfect, responsive sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-## React Compiler
+### Installation
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd sports-hub-frontend-assessment
+   ```
 
-Note: This will impact Vite dev & build performances.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Expanding the ESLint configuration
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+4. **Open in browser**
+   ```
+   http://localhost:5173
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Build for Production
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Preview Production Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run preview
 ```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── fixtures/        # Match cards, filters, date selector
+│   ├── layout/          # Navbar, layout wrapper
+│   └── match/           # Match detail components
+├── constants/           # API endpoints, routes, colors
+├── context/            # Global state management
+├── hooks/              # Custom React hooks
+├── pages/              # Page components (Dashboard, MatchDetail)
+├── types/              # TypeScript type definitions
+└── utils/              # Helper functions
+```
+
+## 🎨 Features
+
+### Dashboard
+- Live match updates with 20-second polling
+- Matches grouped by league
+- Responsive design (360px - 1440px+)
+- Live score animations
+- Filter by All/Live/Favorites
+
+### Match Details
+- Comprehensive match information
+- Event timeline with goals, cards, substitutions
+- Head-to-head statistics
+- Responsive layout
+
+### Technical Highlights
+- **TypeScript**: Full type safety
+- **Tailwind CSS**: Utility-first styling
+- **React Router**: Client-side routing
+- **Custom Hooks**: Clean separation of logic
+- **API Integration**: TheSportsDB API
+- **Offline Support**: Graceful fallback with mock data
+
+## 🔧 Technologies
+
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **React Router** - Routing
+- **TheSportsDB API** - Match data
+
+## 📱 Responsive Breakpoints
+
+- **Mobile**: 360px - 767px
+- **Tablet**: 768px - 1023px
+- **Desktop**: 1024px+
+
+## 🎯 Key Components
+
+### Custom Hooks
+- `useMatchDetails(id)` - Fetch match detail data
+- `useMatches()` - Global match state with polling
+
+### Main Components
+- `Navbar` - Responsive navigation
+- `Dashboard` - Match list view
+- `MatchDetail` - Individual match view
+- `MatchCard` - Match card with live updates
+- `EventTimeline` - Match events display
+
+## 🌐 API Integration
+
+Uses TheSportsDB API for match data:
+- Live matches
+- Match details
+- Team information
+- Event timeline
+
+Fallback to mock data when offline.
+
+## 📝 Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+## 🎨 Design System
+
+### Colors
+- Primary: `#6D00FF`
+- Secondary: `#00FFA5`
+- Danger: `#EE5E52`
+- Background: `#0F1419`
+- Surface: `#1D1E2B`
+
+### Typography
+- **Fonts**: Poppins, Inter
+- **Sizes**: 10px, 12px, 14px, 16px, 18px, 20px
+- **Weights**: 300, 400, 500, 600, 700
+
+## 🐛 Troubleshooting
+
+### Port already in use
+```bash
+# Kill process on port 5173
+npx kill-port 5173
+```
+
+### Build errors
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+## 📄 License
+
+This project is part of a frontend assessment.
+
+## 👤 Author
+
+Built as a technical assessment demonstrating:
+- Pixel-perfect Figma implementation
+- Professional React architecture
+- Advanced CSS techniques
+- Robust async handling

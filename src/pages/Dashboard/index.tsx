@@ -22,9 +22,9 @@ export const Dashboard: React.FC = () => {
 
   return (
     <Layout>
-      <div style={{ width: "820px", gap: "16px" }}>
-        {/* Header with title */}
-        <div className="mb-4">
+      <div className="w-full md:w-[820px] flex flex-col" style={{ gap: "16px", padding: "0 16px 16px 16px" }}>
+        {/* Header with title - Hidden on mobile */}
+        <div className="mb-4 hidden md:block">
           <h1 className="text-2xl font-bold text-white">Matches</h1>
         </div>
 

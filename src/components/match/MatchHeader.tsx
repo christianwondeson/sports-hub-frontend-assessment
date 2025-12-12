@@ -39,7 +39,7 @@ export function MatchHeader({
   const dateStr = matchDate.toLocaleDateString("en-US", { day: "numeric", month: "short" }).toUpperCase()
 
   return (
-    <div className="flex items-center justify-between w-full h-auto min-h-[64px] py-2 px-2">
+    <div className="flex items-center justify-between w-full h-auto min-h-[64px] py-2">
       {/* Home Team */}
       <div className="flex flex-col items-center justify-center flex-1 rounded-lg">
         {/* Team Logo Container */}
@@ -50,7 +50,7 @@ export function MatchHeader({
             className="w-[42px] h-[43px] rounded-[999px] object-contain"
           />
           {/* Card badges */}
-          <div className="absolute -top-1 -right-3 flex gap-[2px]">
+          <div className="absolute -top-1 -left-3 flex gap-[2px]">
             <CardBadge type="yellow" count={homeYellowCards} />
             <CardBadge type="red" count={homeRedCards} />
           </div>
@@ -97,7 +97,7 @@ export function MatchHeader({
             className="w-[42px] h-[43px] rounded-[999px] object-contain"
           />
           {/* Card badges */}
-          <div className="absolute -top-1 -right-3 flex gap-[2px]">
+          <div className="absolute -top-1 -left-3 flex gap-[2px]">
             <CardBadge type="yellow" count={awayYellowCards} />
             <CardBadge type="red" count={awayRedCards} />
           </div>

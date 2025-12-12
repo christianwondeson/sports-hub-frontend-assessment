@@ -51,15 +51,9 @@ export const MatchDetail: React.FC = () => {
     return (
         <Layout>
             {/* Main Container - Responsive max-width */}
-            <div className="w-full max-w-[707px] flex flex-col gap-4">
+            <div className="w-full max-w-[707px] flex flex-col" style={{ gap: "10px", paddingLeft: "16px", paddingRight: "16px" }}>
                 {/* Combined Header Container - Back + Match Header + Tabs with shared background */}
-                <div
-                    className="rounded-lg flex flex-col"
-                    style={{
-                        backgroundColor: "var(--color-background-surface, #1D1E2B)",
-                        width: "100%"
-                    }}
-                >
+                <div className="rounded-lg flex flex-col bg-card w-full">
                     {/* Back and Header Row */}
                     <div
                         className="flex items-center w-full h-[40px] gap-4 px-4 py-2"
@@ -132,7 +126,7 @@ export const MatchDetail: React.FC = () => {
                                     fontWeight: 400,
                                     fontSize: "14px",
                                     lineHeight: "20px",
-                                    color: "var(--color-foreground-muted, #D1D5DB)",
+                                    color: activeTab === tab ? "#FFFFFF" : "var(--color-foreground-muted, #D1D5DB)",
                                     borderBottom: activeTab === tab ? "2px solid #00FFA5" : "2px solid transparent"
                                 }}
                             >

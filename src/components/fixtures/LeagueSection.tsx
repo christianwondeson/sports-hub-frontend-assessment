@@ -10,10 +10,13 @@ interface LeagueSectionProps {
 
 export const LeagueSection: React.FC<LeagueSectionProps> = ({ league, matches, onMatchClick }) => {
     return (
-        <div className="mb-4 rounded-lg overflow-hidden cursor-pointer bg-card w-full max-w-[328px] md:max-w-[820px] p-4">
-            {/* League Header */}
-            <div className="flex items-center justify-between border-b border-muted pb-2 mb-2 w-full">
-                <h3 className="text-white text-sm leading-5 font-normal font-inter">
+        <div
+            className="mb-4 rounded-lg overflow-hidden cursor-pointer bg-card w-full md:w-[820px]"
+            style={{ padding: "16px" }}
+        >
+            {/* League Header - 788px (820 - 16*2) */}
+            <div className="flex items-center justify-between border-b border-muted pb-2 mb-4 w-full h-5">
+                <h3 className="text-white leading-5 font-normal font-sans text-sm">
                     {league}
                 </h3>
                 {/* Chevron */}
@@ -27,12 +30,12 @@ export const LeagueSection: React.FC<LeagueSectionProps> = ({ league, matches, o
                 </div>
             </div>
 
-            {/* Matches List */}
-            <div className="w-full">
+            {/* Matches List - 788px width, 8px gap between cards */}
+            <div className="w-full flex flex-col" style={{ gap: "8px" }}>
                 {matches.map((match, index) => (
                     <div
                         key={match.id}
-                        className="py-2 border-b border-border w-full"
+                        className={`w-full ${index !== matches.length - 1 ? 'border-b border-border' : ''}`}
                     >
                         <MatchCard match={match} onClick={() => onMatchClick?.(match.id)} />
                     </div>

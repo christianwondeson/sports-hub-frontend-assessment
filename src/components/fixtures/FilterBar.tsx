@@ -8,21 +8,6 @@ interface FilterBarProps {
   totalCount?: number
 }
 
-// Live icon SVG - 16x16
-const LiveIcon = ({ className }: { className?: string }) => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="8" cy="12" r="1.5" fill="currentColor" />
-    <path d="M5.5 9C6 8.5 7 8 8 8C9 8 10 8.5 10.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M3 6.5C4.2 5.3 5.9 4.5 8 4.5C10.1 4.5 11.8 5.3 13 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M1 4C2.8 2.3 5.2 1.2 8 1.2C10.8 1.2 13.2 2.3 15 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
-  </svg>
-)
-
-const HeartIcon = ({ className }: { className?: string }) => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M10.9 1.5C12.5 1.5 13.8 2.8 13.8 4.5C13.8 5.2 13.7 5.8 13.5 6.4C13 7.9 12.1 9.1 11.1 9.9C10.1 10.8 9 11.3 8.3 11.6C8.3 11.6 8.2 11.6 8 11.6C7.8 11.6 7.7 11.6 7.7 11.6C7 11.3 5.9 10.8 4.9 9.9C3.9 9.1 3.0 7.9 2.5 6.4C2.3 5.8 2.2 5.2 2.2 4.5C2.2 2.8 3.5 1.5 5.1 1.5C6 1.5 6.8 1.9 7.3 2.5L8 3.3L8.7 2.5C9.2 1.9 10 1.5 10.9 1.5Z" stroke="currentColor" strokeWidth="1" />
-  </svg>
-)
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   onFilterChange,
@@ -56,13 +41,15 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       id: "favorites" as FilterType,
       label: "Favorites",
       count: favoritesCount,
-      icon: <HeartIcon className="w-4 h-4" />,
+      icon: <img src="/assets/svgs/heart.svg" alt="Favorites" className="w-4 h-4" />,
       width: "134px"
     },
   ]
 
   return (
-    <div className="flex items-center mb-4 w-full max-w-[328px] md:max-w-full h-[36px] border-b border-border md:border-b-0" style={{ gap: "16px" }}>
+    <div
+      className="flex items-center mb-4 w-full h-[36px] gap-4 md:w-[328px] md:gap-4 md:border-b md:border-border"
+    >
       {buttons.map((btn) => {
         const isActive = active === btn.id
 
@@ -70,11 +57,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         // Active: bg-secondary (#00FFA5), text-[#0F1419], border 1px
         // Inactive: bg-card (#1D1E2B), text-white, border 1px transparent
 
-        const baseClasses = "flex items-center justify-center rounded-lg transition-all h-[36px] cursor-pointer group border"
+        // Mobile: flex-1 for proportional scaling
+        // Desktop: fixed width 100px, height 36px, gap 8px, border-radius 8px, padding 8px 12px
+        const baseClasses = "flex items-center justify-center rounded-lg transition-all h-[36px] cursor-pointer group border flex-1 md:flex-none text-center"
 
         const stateClasses = isActive
           ? "bg-secondary text-secondary-foreground border-secondary"
-          : "bg-card text-foreground hover:bg-[#252735] hover:text-secondary border-transparent"
+          : "bg-card text-foreground hover:bg-[#252735] border-transparent hover:text-[#00FFA5]"
 
         // Badge styles - 16x16 with border-radius 12px
         // Active: bg-[#181921], text-secondary
@@ -82,31 +71,40 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         const badgeBgClass = "bg-[#181921]"
         const badgeTextClass = isActive ? "text-secondary" : "text-white group-hover:text-secondary"
 
+        // Desktop button width: 100px (Figma spec)
+        const desktopWidthClass = "md:w-[100px]"
+
         return (
           <button
             key={btn.id}
             onClick={() => handleFilterClick(btn.id)}
-            className={`${baseClasses} ${stateClasses}`}
+            className={`${baseClasses} ${stateClasses} ${desktopWidthClass}`}
             style={{
-              width: btn.width,
+              minWidth: btn.id === "all" ? "60px" : btn.id === "live" ? "90px" : "120px",
               padding: "8px 12px",
               gap: "8px",
               fontFamily: "Inter, sans-serif",
               fontWeight: 500,
               fontSize: "14px",
-              lineHeight: "20px",
-              textAlign: "center" as const,
-              borderRadius: "8px"
+              lineHeight: "20px"
             }}
           >
-            {btn.icon}
-            <span>{btn.label}</span>
+            {/* Icon and Text container - width: 52px, gap: 8px */}
+            <div className="flex items-center" style={{ gap: "8px" }}>
+              {/* Icon - 16x16 */}
+              {btn.icon}
+              {/* Text */}
+              <span>{btn.label}</span>
+            </div>
+
+            {/* Badge - 16x16, border-radius 12px, gap 4px */}
             <span
-              className={`flex items-center justify-center font-bold text-xs rounded-[12px] ${badgeBgClass} ${badgeTextClass}`}
+              className={`flex items-center justify-center font-bold rounded-[12px] w-4 h-4 ${badgeBgClass} ${badgeTextClass}`}
               style={{
-                width: "16px",
-                height: "16px",
-                fontSize: "10px"
+                fontSize: "12px",
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 600,
+                lineHeight: "16px"
               }}
             >
               {btn.count}

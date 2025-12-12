@@ -1,3 +1,5 @@
+import type { Match } from "../types"
+
 export const MOCK_MATCHES: Record<string, Match[]> = {
     "UEFA Champions League": [
         {

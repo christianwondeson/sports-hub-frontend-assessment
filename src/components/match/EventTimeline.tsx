@@ -1,4 +1,3 @@
-import React from "react"
 import type { Match, MatchEvent } from "../../types"
 
 interface EventTimelineProps {
@@ -23,7 +22,7 @@ const YellowCardIcon = () => (
     <img src="/assets/svgs/yellow-card.svg" alt="Yellow Card" className="w-3 h-3" />
 )
 
-const SubstitutionIcon = ({ direction }: { direction: "in" | "out" }) => (
+const SubstitutionIcon = () => (
     <img src="/assets/svgs/Substituition.svg" alt="Substitution" className="w-[13px] h-[12px]" />
 )
 
@@ -73,14 +72,14 @@ export function EventTimeline({ events, match }: EventTimelineProps) {
             case "red-card":
                 return <RedCardIcon />
             case "substitution":
-                return <SubstitutionIcon direction="in" />
+                return <SubstitutionIcon />
             case "corner":
                 return <FlagIcon />
             case "var":
                 // 25' Gyokores uses the 'score.svg' (explosion/collision look)
                 // 44' Jones uses Substitution icon generally
                 if (event.minute === 25) return <ScoreIcon />
-                return <SubstitutionIcon direction="out" />
+                return <SubstitutionIcon />
             default:
                 return <span className="text-sm text-foreground-secondary">•</span>
         }
@@ -118,12 +117,6 @@ export function EventTimeline({ events, match }: EventTimelineProps) {
                                 {event.assistPlayer && (
                                     <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
                                 )}
-                                {event.type === "substitution" && event.assistPlayer && (
-                                    <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
-                                )}
-                                {event.type === "var" && event.assistPlayer && (
-                                    <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
-                                )}
                             </div>
 
                             <div className="flex items-center justify-center w-6 h-6">
@@ -154,12 +147,6 @@ export function EventTimeline({ events, match }: EventTimelineProps) {
                             <div className="flex flex-col items-start ml-[10px]">
                                 <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-white">{event.player}</span>
                                 {event.assistPlayer && (
-                                    <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
-                                )}
-                                {event.type === "substitution" && event.assistPlayer && (
-                                    <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
-                                )}
-                                {event.type === "var" && event.assistPlayer && (
                                     <span className="font-['Inter'] font-normal text-[11px] leading-[15px] text-[#A0A3B1]">{event.assistPlayer}</span>
                                 )}
                             </div>

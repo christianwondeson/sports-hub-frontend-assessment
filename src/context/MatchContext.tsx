@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import type { Match } from "../types"
 import type { ReactNode } from "react";
 import { API_ENDPOINTS, PREMIER_LEAGUE_ID } from '../constants/api';
@@ -49,16 +49,17 @@ export function MatchProvider({ children }: { children: ReactNode }) {
                     }))
                 }
             } catch (error) {
-                console.error("Failed to fetch fixtures:", error)
+                console.error("Failed to fetch fixtures (using mock data):", error)
+                // Keep MOCK_MATCHES when offline - they're already in initial state
             }
         }
 
         fetchFixtures()
 
-        // Polling for simulated updates (keep existing logic for demo liveliness)
+        // Polling for updates with simulation for demo
         const interval = setInterval(async () => {
             try {
-                // Fetch updated fixtures
+                // Try to fetch updated fixtures
                 const response = await fetch(`${API_ENDPOINTS.EVENTS_NEXT(PREMIER_LEAGUE_ID)}`);
                 const data = await response.json();
 
@@ -89,7 +90,40 @@ export function MatchProvider({ children }: { children: ReactNode }) {
                     }));
                 }
             } catch (error) {
-                console.error("Failed to fetch updated fixtures:", error);
+                console.error("Failed to fetch updated fixtures (simulating demo data):", error);
+
+                // Simulate live match updates when offline
+                setMatchesMap((prev) => {
+                    const updated = { ...prev };
+
+                    // Update each league's matches
+                    Object.keys(updated).forEach(league => {
+                        updated[league] = updated[league].map(match => {
+                            // Only simulate updates for live matches
+                            if (match.status === "live") {
+                                const newMatch = { ...match };
+
+                                // Increment minute (cap at 90)
+                                if (newMatch.minute !== undefined && newMatch.minute < 90) {
+                                    newMatch.minute = Math.min(newMatch.minute + 1, 90);
+                                }
+
+                                // Randomly update scores (10% chance per team)
+                                if (Math.random() < 0.1) {
+                                    newMatch.homeScore = (newMatch.homeScore || 0) + 1;
+                                }
+                                if (Math.random() < 0.1) {
+                                    newMatch.awayScore = (newMatch.awayScore || 0) + 1;
+                                }
+
+                                return newMatch;
+                            }
+                            return match;
+                        });
+                    });
+
+                    return updated;
+                });
             }
         }, POLLING_INTERVAL);
 
