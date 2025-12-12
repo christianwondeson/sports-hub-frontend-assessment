@@ -2,6 +2,12 @@
 
 Sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
 
+## 🌐 Live Demo
+
+Project is deployed on Vercel:
+
+- https://sports-hub-frontend-assessment.vercel.app/
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -150,3 +156,8 @@ npm run lint     # Run ESLint
 # Kill process on port 5173
 npx kill-port 5173
 ```
+
+## 👤 Author
+
+- Name: Christian Wondeson Girma 
+  (Tell me your preferred display name and I will update this section.)
