@@ -1,6 +1,6 @@
 # Sports Hub Frontend Assessment
 
-A pixel-perfect, responsive sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
+Sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
 
 ## 🚀 Quick Start
 
