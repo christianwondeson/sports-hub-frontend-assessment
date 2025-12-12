@@ -1,6 +1,6 @@
 # Sports Hub Frontend Assessment
 
-A pixel-perfect, responsive sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
+Sports dashboard built with React, TypeScript, Vite, and Tailwind CSS. Features live match updates, detailed match views, and seamless mobile-to-desktop responsiveness.
 
 ## 🚀 Quick Start
 
@@ -150,22 +150,3 @@ npm run lint     # Run ESLint
 # Kill process on port 5173
 npx kill-port 5173
 ```
-
-### Build errors
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-## 📄 License
-
-This project is part of a frontend assessment.
-
-## 👤 Author
-
-Built as a technical assessment demonstrating:
-- Pixel-perfect Figma implementation
-- Professional React architecture
-- Advanced CSS techniques
-- Robust async handling
