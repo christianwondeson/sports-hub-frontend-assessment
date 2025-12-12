@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #0F1419;
+  --foreground: #FFFFFF;
+  --card: #1D1E2B;
+  --card-foreground: #FFFFFF;
+  --popover: #1D1E2B;
+  --popover-foreground: #FFFFFF;
+  --primary: #6D00FF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #00FFA5;
+  --secondary-foreground: #0F1419;
+  --muted: #252735;
+  --muted-foreground: #A0A3B1;
+  --accent: #252735;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EE5E52;
+  --destructive-foreground: #FFFFFF;
+  --border: #292B41;
+  --input: #292B41;
+  --ring: #6D00FF;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: #1D1E2B;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #6D00FF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #252735;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #292B41;
+  --sidebar-ring: #6D00FF;
+  --color-accent-base: #C2EF00;
+}
+
+@theme inline {
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+  --font-sans: "Poppins", "Inter", system-ui, sans-serif;
+
+  /* Primary Colors */
+  --color-primary: #6d00ff;
+  --color-secondary: #00ffa5;
+  --color-danger: #ee5e52;
+
+  /* Dark Theme */
+  --color-background-dark: #0f1419;
+  --color-background-surface: #1d1e2b;
+  --color-background-surface-alt: #252735;
+  --color-foreground-primary: #ffffff;
+  --color-foreground-secondary: #a0a3b1;
+  --color-foreground-muted: #D1D5DB;
+  --color-foreground-subtle-static: #6B7280;
+  --color-border-base: #292B41;
+
+  /* Radius */
+  --radius: 0.625rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  /* --color-primary: var(--primary);  <-- This conflicts with your custom --color-primary above. Using yours for now, but be aware. */
+  /* --color-secondary: var(--secondary); <-- Conflicts. */
+
+  /* keeping your custom mappings below */
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background-dark);
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes */
+@layer components {
+  .navbar-container {
+    @apply w-full bg-primary h-16 flex items-center justify-between px-4;
+  }
+
+  .fixture-card {
+    @apply bg-background-surface rounded border-l-4 border-danger p-4;
+  }
+
+  .match-event {
+    @apply flex items-start gap-3 py-3 border-b border-background-surface-alt last:border-b-0;
+  }
+
+  /* Match Card Styles */
+  .match-time-text {
+    @apply text-xs leading-4 text-center;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0%;
+  }
+
+  .team-name-text {
+    @apply text-white truncate text-xs leading-4;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+  }
+
+  .match-score-text {
+    @apply text-xs leading-4 text-center;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+  }
+
+  .match-aggregate-text {
+    @apply text-xs leading-4 text-center text-[#A0A3B1];
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+  }
+
+  .league-title-text {
+    @apply text-white text-sm leading-5;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+  }
+
+  /* Live Indicator Animation - Traveling pulse left to right */
+  @keyframes live-traveling-pulse {
+    0% {
+      left: 0;
+      width: 4px;
+    }
+
+    50% {
+      left: 50%;
+      width: 24px;
+      transform: translateX(-50%);
+    }
+
+    100% {
+      left: 100%;
+      width: 4px;
+      transform: translateX(-100%);
+    }
+  }
+
+  .live-indicator-line {
+    @apply h-0.5 rounded-full mt-1;
+    position: relative;
+    width: 24px;
+    background: transparent;
+  }
+
+  .live-indicator-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #00FFA5, #00FFD1);
+    border-radius: 9999px;
+    animation: live-traveling-pulse 1.5s ease-in-out infinite alternate;
+  }
+}
+
+/* Base styles */
+html {
+  background-color: var(--color-background-dark);
+  color: var(--color-foreground-primary);
+}
