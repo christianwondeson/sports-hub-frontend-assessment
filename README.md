@@ -150,6 +150,3 @@ npm run lint     # Run ESLint
 # Kill process on port 5173
 npx kill-port 5173
 ```
-- Professional React architecture
-- Advanced CSS techniques
-- Robust async handling
