@@ -1,99 +1,97 @@
 import { createContext, useContext, useState, useEffect } from "react"
-import type { Match } from "../types"
+import type { Match, FilterType } from "../types"
 import type { ReactNode } from "react";
-import { API_ENDPOINTS, PREMIER_LEAGUE_ID } from '../constants/api';
+import { API_ENDPOINTS } from '../constants/api';
 import type { SportsDBEvent } from '../types';
 import { MOCK_MATCHES, POLLING_INTERVAL } from './matchConfig';
 
 interface MatchContextType {
     matchesMap: Record<string, Match[]>
+    activeFilter: FilterType
+    setActiveFilter: (filter: FilterType) => void
+    refreshMatches: () => Promise<void>
 }
 
 const MatchContext = createContext<MatchContextType | undefined>(undefined)
 
 export function MatchProvider({ children }: { children: ReactNode }) {
     const [matchesMap, setMatchesMap] = useState(MOCK_MATCHES)
+    const [activeFilter, setActiveFilter] = useState<FilterType>("all")
 
-    // Fetch live fixtures on mount
-    useEffect(() => {
-        async function fetchFixtures() {
-            try {
-                // Fetch Premier League Fixtures (League 4328)
-                const response = await fetch(`${API_ENDPOINTS.EVENTS_NEXT(PREMIER_LEAGUE_ID)}`);
-                const data = await response.json()
+    const refreshMatches = async () => {
+        try {
+            // Fetch Premier League Fixtures (League 4328) for Season 2024-2025
+            const url = API_ENDPOINTS.EVENTS_SEASON("4328", "2024-2025");
+            console.log("Fetching fixtures from:", url);
+            const response = await fetch(url);
+            const data = await response.json()
 
-                if (data.events) {
-                    const plMatches: Match[] = data.events.map((event: SportsDBEvent) => ({
-                        id: event.idEvent,
-                        leagueId: event.idLeague,
-                        homeTeam: {
-                            id: event.idHomeTeam,
-                            name: event.strHomeTeam,
-                            logo: event.strHomeTeamBadge || "/assets/svgs/clubs/arsenal.svg" // Fallback logo
-                        },
-                        awayTeam: {
-                            id: event.idAwayTeam,
-                            name: event.strAwayTeam,
-                            logo: event.strAwayTeamBadge || "/assets/svgs/clubs/liverpool.svg" // Fallback logo
-                        },
-                        homeScore: event.intHomeScore ? parseInt(event.intHomeScore) : null,
-                        awayScore: event.intAwayScore ? parseInt(event.intAwayScore) : null,
-                        status: event.strStatus === "Not Started" ? "scheduled" : "live", // Simplified status mapping
-                        startTime: event.strTimestamp, // "2025-12-10T18:00:00+00:00"
-                        league: event.strLeague
-                    }))
+            if (data.events) {
+                const plMatches: Match[] = data.events.map((event: SportsDBEvent) => ({
+                    id: event.idEvent,
+                    leagueId: event.idLeague,
+                    homeTeam: {
+                        id: event.idHomeTeam,
+                        name: event.strHomeTeam,
+                        logo: event.strHomeTeamBadge || "/assets/svgs/clubs/arsenal.svg" // Fallback logo
+                    },
+                    awayTeam: {
+                        id: event.idAwayTeam,
+                        name: event.strAwayTeam,
+                        logo: event.strAwayTeamBadge || "/assets/svgs/clubs/liverpool.svg" // Fallback logo
+                    },
+                    homeScore: event.intHomeScore ? parseInt(event.intHomeScore) : null,
+                    awayScore: event.intAwayScore ? parseInt(event.intAwayScore) : null,
+                    status: event.strStatus === "Match Finished" ? "finished" :
+                        event.strStatus === "Not Started" ? "scheduled" : "live", // Simplified status mapping
+                    startTime: event.strTimestamp, // "2025-12-10T18:00:00+00:00"
+                    league: event.strLeague
+                }))
 
-                    setMatchesMap(prev => ({
-                        ...prev,
-                        "English Premier League": plMatches
-                    }))
+                // Check if we have any live matches from API
+                const hasLiveMatches = plMatches.some(m => m.status === "live")
+
+                // If no live matches from API, inject mocks (for demo purposes)
+                let finalMatches = plMatches
+                if (!hasLiveMatches) {
+                    const mockLiveMatches = MOCK_MATCHES["English Premier League"].filter(m => m.status === "live")
+                    finalMatches = [...plMatches, ...mockLiveMatches]
                 }
-            } catch (error) {
-                console.error("Failed to fetch fixtures (using mock data):", error)
-                // Keep MOCK_MATCHES when offline - they're already in initial state
+
+                setMatchesMap(prev => ({
+                    ...prev,
+                    "English Premier League": finalMatches
+                }))
             }
+        } catch (error) {
+            console.error("Failed to fetch fixtures (using mock data):", error)
+            // Keep MOCK_MATCHES when offline - they're already in initial state
         }
+    }
 
-        fetchFixtures()
+    // Simulation logic effect
+    useEffect(() => {
 
-        // Polling for updates with simulation for demo
-        const interval = setInterval(async () => {
-            try {
-                // Try to fetch updated fixtures
-                const response = await fetch(`${API_ENDPOINTS.EVENTS_NEXT(PREMIER_LEAGUE_ID)}`);
-                const data = await response.json();
-
-                if (data.events) {
-                    const updatedMatches = data.events.map((event: SportsDBEvent) => ({
-                        id: event.idEvent,
-                        leagueId: event.idLeague,
-                        homeTeam: {
-                            id: event.idHomeTeam,
-                            name: event.strHomeTeam,
-                            logo: event.strHomeTeamBadge || "/assets/svgs/clubs/arsenal.svg",
-                        },
-                        awayTeam: {
-                            id: event.idAwayTeam,
-                            name: event.strAwayTeam,
-                            logo: event.strAwayTeamBadge || "/assets/svgs/clubs/liverpool.svg",
-                        },
-                        homeScore: event.intHomeScore ? parseInt(event.intHomeScore) : null,
-                        awayScore: event.intAwayScore ? parseInt(event.intAwayScore) : null,
-                        status: event.strStatus === "Not Started" ? "scheduled" : "live",
-                        startTime: event.strTimestamp,
-                        league: event.strLeague,
-                    }));
-
-                    setMatchesMap((prev) => ({
-                        ...prev,
-                        "English Premier League": updatedMatches,
-                    }));
-                }
-            } catch (error) {
-                console.error("Failed to fetch updated fixtures (simulating demo data):", error);
-
-                // Simulate live match updates when offline
+        // Simulation logic function
+        const runSimulation = () => {
+            if (activeFilter === "live") {
                 setMatchesMap((prev) => {
+                    // Check if we have any live matches in the current state
+                    const hasLiveMatches = Object.values(prev).some(matches =>
+                        matches.some(m => m.status === "live")
+                    );
+
+                    // If no live matches, inject mock live matches for simulation
+                    if (!hasLiveMatches) {
+                        return {
+                            ...prev,
+                            "English Premier League": [
+                                ...prev["English Premier League"].filter(m => m.status !== "live"),
+                                ...MOCK_MATCHES["English Premier League"].filter(m => m.status === "live")
+                            ]
+                        };
+                    }
+
                     const updated = { ...prev };
 
                     // Update each league's matches
@@ -125,13 +123,19 @@ export function MatchProvider({ children }: { children: ReactNode }) {
                     return updated;
                 });
             }
-        }, POLLING_INTERVAL);
+        };
+
+        // Run immediately when filter changes
+        runSimulation();
+
+        // Polling for updates
+        const interval = setInterval(runSimulation, POLLING_INTERVAL);
 
         return () => clearInterval(interval)
-    }, [])
+    }, [activeFilter])
 
     return (
-        <MatchContext.Provider value={{ matchesMap }}>
+        <MatchContext.Provider value={{ matchesMap, activeFilter, setActiveFilter, refreshMatches }}>
             {children}
         </MatchContext.Provider>
     )

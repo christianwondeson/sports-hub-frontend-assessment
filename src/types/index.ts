@@ -87,4 +87,29 @@ export interface SportsDBEventResponse {
   events: SportsDBEvent[] | null
 }
 
+export interface SportsDBTimelineEvent {
+  idTimeline: string
+  idEvent: string
+  strTimeline: string
+  strTimelineDetail: string
+  strHome: string
+  strEvent: string
+  idAPIfootball: string
+  idPlayer: string
+  strPlayer: string
+  strCountry: string | null
+  idAssist: string | null
+  strAssist: string
+  intTime: string
+  idTeam: string
+  strTeam: string
+  strComment: string
+  dateEvent: string
+  strSeason: string
+}
+
+export interface SportsDBTimelineResponse {
+  timeline: SportsDBTimelineEvent[] | null
+}
+
 export type FilterType = "all" | "live" | "favorites"

@@ -137,3 +137,34 @@ export function parseMatchEvents(event: SportsDBEvent): MatchEvent[] {
     // Sort by minute descending
     return events.sort((a, b) => b.minute - a.minute)
 }
+
+// Parse timeline events from API response
+export function parseTimelineEvents(timelineEvents: import("../types").SportsDBTimelineEvent[]): MatchEvent[] {
+    if (!timelineEvents || !Array.isArray(timelineEvents)) return []
+
+    return timelineEvents.map((event, index) => {
+        let type: MatchEvent["type"] = "var" // Default fallback
+
+        // Map API timeline types to internal types
+        if (event.strTimeline === "Goal") type = "goal"
+        else if (event.strTimeline === "Card") {
+            if (event.strTimelineDetail === "Yellow Card") type = "yellow-card"
+            else if (event.strTimelineDetail === "Red Card") type = "red-card"
+        }
+        else if (event.strTimeline === "subst") type = "substitution"
+
+        // Parse minute
+        const minute = parseInt(event.intTime, 10) || 0
+        const team: "home" | "away" = event.strHome === "Yes" ? "home" : "away"
+
+        return {
+            id: event.idTimeline || `timeline-${index}`,
+            type,
+            minute,
+            team,
+            player: event.strPlayer,
+            assistPlayer: event.strAssist,
+            description: event.strTimelineDetail
+        }
+    }).sort((a, b) => b.minute - a.minute)
+}

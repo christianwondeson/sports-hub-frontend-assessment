@@ -139,7 +139,7 @@ export const MatchDetail: React.FC = () => {
                 {/* Events Content */}
                 {activeTab === "Events" && (
                     <div
-                        className="rounded-lg w-full min-h-[924px] gap-[10px]"
+                        className="rounded-lg w-full h-auto pb-4 gap-[10px]"
                         style={{
                             backgroundColor: "#1D1E2B",
                         }}

@@ -76,10 +76,7 @@ export function EventTimeline({ events, match }: EventTimelineProps) {
             case "corner":
                 return <FlagIcon />
             case "var":
-                // 25' Gyokores uses the 'score.svg' (explosion/collision look)
-                // 44' Jones uses Substitution icon generally
-                if (event.minute === 25) return <ScoreIcon />
-                return <SubstitutionIcon />
+                return <ScoreIcon />
             default:
                 return <span className="text-sm text-foreground-secondary">•</span>
         }
